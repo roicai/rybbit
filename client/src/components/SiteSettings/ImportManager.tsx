@@ -169,9 +169,16 @@ export function ImportManager({ siteId, disabled }: ImportManagerProps) {
 
   const handleDeleteConfirm = () => {
     if (deleteImportId) {
-      deleteMutation.mutate(deleteImportId);
-      setDeleteImportId(null);
-      setShowDeleteDialog(false);
+      deleteMutation.mutate(deleteImportId, {
+        onSuccess: () => {
+          setDeleteImportId(null);
+          setShowDeleteDialog(false);
+        },
+        onError: () => {
+          setDeleteImportId(null);
+          setShowDeleteDialog(false);
+        },
+      });
     }
   };
 

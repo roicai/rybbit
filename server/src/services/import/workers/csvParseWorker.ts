@@ -181,10 +181,7 @@ export async function createCsvParseWorker(jobQueue: IJobQueue) {
           `${quotaSummary.monthsAtCapacity} of ${quotaSummary.totalMonthsInWindow} months are at full capacity. ` +
           `Try importing newer data or upgrade your plan for higher monthly quotas.`;
         await updateImportStatus(importId, "failed", errorMessage);
-        const deleteResult = await deleteImportFile(storageLocation, isR2Storage);
-        if (!deleteResult.success) {
-          logger.warn({ importId, error: deleteResult.error }, "File cleanup failed");
-        }
+        await deleteImportFile(storageLocation, isR2Storage);
         return;
       }
 
@@ -213,16 +210,12 @@ export async function createCsvParseWorker(jobQueue: IJobQueue) {
         }
       }
 
-      // Clean up file - log errors but don't throw to prevent worker crashes
       try {
-        const deleteResult = await deleteImportFile(storageLocation, isR2Storage);
-        if (!deleteResult.success) {
-          logger.warn({ importId, error: deleteResult.error }, "File cleanup failed, will remain in storage");
-          // File will be orphaned but import status is already recorded
-          // importCleanupService.ts handles orphans
-        }
+        await deleteImportFile(storageLocation, isR2Storage);
       } catch (deleteError) {
-        logger.error({ importId, error: deleteError }, "Critical error during file cleanup");
+        logger.warn({ importId, error: deleteError }, "File cleanup failed, will remain in storage");
+        // File will be orphaned but import status is already recorded
+        // importCleanupService.ts handles orphans
       }
     }
   });

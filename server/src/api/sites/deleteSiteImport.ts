@@ -82,9 +82,10 @@ export async function deleteSiteImport(request: FastifyRequest<DeleteImportReque
     // Delete the import file if it exists
     // This is best-effort - we don't fail the entire operation if the file is already gone
     const storage = getImportStorageLocation(importId, importRecord.fileName);
-    const deleteResult = await deleteImportFile(storage.location, storage.isR2);
-    if (!deleteResult.success) {
-      console.warn(`Failed to delete import file for ${importId}: ${deleteResult.error}`);
+    try {
+      await deleteImportFile(storage.location, storage.isR2);
+    } catch (deleteError) {
+      console.warn(`Failed to delete import file for ${importId}:`, deleteError);
     }
 
     return reply.send({

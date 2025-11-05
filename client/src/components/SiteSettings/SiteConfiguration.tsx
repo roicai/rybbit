@@ -25,6 +25,7 @@ import { deleteSite, SiteResponse, updateSiteConfig, useGetSitesFromOrg } from "
 import { normalizeDomain } from "@/lib/utils";
 import { IPExclusionManager } from "./IPExclusionManager";
 import { CountryExclusionManager } from "./CountryExclusionManager";
+import { GSCManager } from "./GSCManager";
 import { useStripeSubscription } from "../../lib/subscription/useStripeSubscription";
 import { Badge } from "../ui/badge";
 import { IS_CLOUD } from "../../lib/const";
@@ -305,6 +306,9 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
       {/* Country Exclusions Section */}
       <CountryExclusionManager siteId={siteMetadata.siteId} disabled={disabled} />
 
+      {/* Google Search Console Section */}
+      {IS_CLOUD && <GSCManager disabled={disabled} />}
+
       {/* Domain Settings Section */}
       <div className="space-y-3">
         <div>
@@ -332,8 +336,8 @@ export function SiteConfiguration({ siteMetadata, disabled = false, onClose }: S
         <h4 className="text-sm font-semibold text-destructive">Danger Zone</h4>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive" className="w-full" disabled={disabled}>
-              <AlertTriangle className="h-4 w-4 mr-2" />
+            <Button variant="destructive" disabled={disabled}>
+              <AlertTriangle className="h-4 w-4" />
               Delete Site
             </Button>
           </AlertDialogTrigger>

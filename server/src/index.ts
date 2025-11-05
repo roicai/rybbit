@@ -80,6 +80,12 @@ import { extractSiteId } from "./utils.js";
 import { getTrackingConfig } from "./api/sites/getTrackingConfig.js";
 import { updateSitePrivateLinkConfig } from "./api/sites/updateSitePrivateLinkConfig.js";
 import { getSitePrivateLinkConfig } from "./api/sites/getSitePrivateLinkConfig.js";
+import { connectGSC } from "./api/gsc/connect.js";
+import { gscCallback } from "./api/gsc/callback.js";
+import { getGSCStatus } from "./api/gsc/status.js";
+import { disconnectGSC } from "./api/gsc/disconnect.js";
+import { getGSCData } from "./api/gsc/getData.js";
+import { selectGSCProperty } from "./api/gsc/selectProperty.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -201,6 +207,7 @@ const PUBLIC_ROUTES: string[] = [
   "/api/auth",
   "/api/auth/callback/google",
   "/api/auth/callback/github",
+  "/api/gsc/callback",
   "/api/stripe/webhook",
   "/api/as/webhook",
   "/api/session-replay/record",
@@ -243,6 +250,7 @@ const ANALYTICS_ROUTES = [
   "/api/error-events/",
   "/api/error-bucketed/",
   "/api/session-replay/",
+  "/api/gsc/data/",
 ];
 
 server.addHook("onRequest", async (request, reply) => {
@@ -357,6 +365,14 @@ server.get("/api/list-organization-members/:organizationId", listOrganizationMem
 server.get("/api/user/organizations", getUserOrganizations);
 server.post("/api/add-user-to-organization", addUserToOrganization);
 server.post("/api/user/account-settings", updateAccountSettings);
+
+// GOOGLE SEARCH CONSOLE
+server.get("/api/gsc/connect/:site", connectGSC);
+server.get("/api/gsc/callback", gscCallback);
+server.get("/api/gsc/status/:site", getGSCStatus);
+server.delete("/api/gsc/disconnect/:site", disconnectGSC);
+server.post("/api/gsc/select-property/:site", selectGSCProperty);
+server.get("/api/gsc/data/:site", getGSCData);
 
 // UPTIME MONITORING
 // Only register uptime routes when IS_CLOUD is true (Redis is available)

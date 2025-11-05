@@ -598,3 +598,22 @@ export const notificationChannels = pgTable(
     }),
   ]
 );
+
+// Google Search Console connections table
+export const gscConnections = pgTable("gsc_connections", {
+  siteId: integer("site_id")
+    .primaryKey()
+    .notNull()
+    .references(() => sites.siteId, { onDelete: "cascade" }),
+
+  // OAuth tokens
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refresh_token").notNull(),
+  expiresAt: timestamp("expires_at", { mode: "string" }).notNull(),
+
+  // Which GSC property this connection is for
+  gscPropertyUrl: text("gsc_property_url").notNull(),
+
+  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
+});

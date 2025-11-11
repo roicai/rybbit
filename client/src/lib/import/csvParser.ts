@@ -200,4 +200,8 @@ export class CsvParser {
       return;
     }
   }
+
+  terminate() {
+    this.aborted = true;
+  }
 }

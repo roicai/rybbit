@@ -44,7 +44,6 @@ export async function createSiteImport(request: FastifyRequest<CreateSiteImportR
       return reply.status(403).send({ error: "Forbidden" });
     }
 
-    // Get site's organization
     const [siteRecord] = await db
       .select({ organizationId: sites.organizationId })
       .from(sites)
@@ -57,21 +56,18 @@ export async function createSiteImport(request: FastifyRequest<CreateSiteImportR
 
     const organizationId = siteRecord.organizationId;
 
-    // Atomically check and register import (prevents race condition)
     if (!importQuotaManager.startImport(organizationId)) {
       return reply.status(429).send({ error: "Only 1 concurrent import allowed per organization" });
     }
 
-    // Get quota information from cached tracker
     const quotaTracker = await importQuotaManager.getTracker(organizationId);
     const summary = quotaTracker.getSummary();
 
-    // Calculate the earliest and latest allowed dates
-    const oldestAllowedDate = DateTime.fromFormat(summary.oldestAllowedMonth + "01", "yyyyMMdd", { zone: "utc" });
-    const earliestAllowedDate = oldestAllowedDate.toFormat("yyyy-MM-dd");
+    const earliestAllowedDate = DateTime.fromFormat(summary.oldestAllowedMonth + "01", "yyyyMMdd", {
+      zone: "utc",
+    }).toFormat("yyyy-MM-dd");
     const latestAllowedDate = DateTime.utc().toFormat("yyyy-MM-dd");
 
-    // Create import record using importStatusManager
     const importRecord = await createImport({
       siteId,
       organizationId,

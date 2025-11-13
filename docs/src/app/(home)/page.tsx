@@ -154,6 +154,8 @@ export default function HomePage() {
             <TrackedButton
               href="https://demo.rybbit.com/21"
               eventName="demo"
+              target="_blank"
+              rel="noopener noreferrer"
               eventProps={{ location: "hero", button_text: "See live demo" }}
               className="w-full whitespace-nowrap sm:w-auto bg-neutral-800 hover:bg-neutral-700 text-white font-medium px-5 py-3 rounded-lg border border-neutral-600 transform hover:-translate-y-0.5 transition-all duration-200 hover:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-opacity-50 cursor-pointer"
             >

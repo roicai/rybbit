@@ -23,6 +23,7 @@ import {
   Zap,
 } from "lucide-react";
 import { platformList } from "./components/platform-configs";
+import { commentPlatformList } from "./components/comment-platform-configs";
 import {
   SiDiscord,
   SiX,
@@ -221,12 +222,21 @@ const platformIconMap: Record<string, any> = {
   dribbble: SiDribbble,
 };
 
-const socialMediaTools = platformList.map(platform => ({
+const fontGeneratorTools = platformList.map(platform => ({
   href: `/tools/${platform.id}-font-generator`,
   icon: platformIconMap[platform.id],
   title: platform.displayName,
   description: `Transform your text into unique Unicode fonts for ${platform.name}. Stand out with stylish text.`,
 }));
+
+const commentGeneratorTools = commentPlatformList.map(platform => ({
+  href: `/tools/${platform.id}-comment-generator`,
+  icon: platformIconMap[platform.id],
+  title: platform.displayName,
+  description: `Generate engaging AI-powered comments for ${platform.name}. Create authentic, contextual responses.`,
+}));
+
+const socialMediaTools = [...fontGeneratorTools, ...commentGeneratorTools];
 
 function ToolCard({ tool }: { tool: { href: string; icon: any; title: string; description: string } }) {
   const Icon = tool.icon;
@@ -290,7 +300,7 @@ export default function ToolsPage() {
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <MessageCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Social Media Font Generators</h2>
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Social Media Tools</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             {socialMediaTools.map(tool => (

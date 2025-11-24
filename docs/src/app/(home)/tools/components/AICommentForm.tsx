@@ -38,9 +38,9 @@ const toneOptions = [
 ];
 
 const lengthOptions = [
-  { value: "short", label: "Short", description: "~50 characters" },
-  { value: "medium", label: "Medium", description: "~100 characters" },
-  { value: "long", label: "Long", description: "~200 characters" },
+  { value: "short", label: "Short", description: "~100 characters" },
+  { value: "medium", label: "Medium", description: "~250 characters" },
+  { value: "long", label: "Long", description: "~500 characters" },
 ];
 
 export default function AICommentForm({ platform }: AICommentFormProps) {

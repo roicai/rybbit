@@ -18,9 +18,9 @@ const requestSchema = z.object({
 });
 
 const lengthTargets = {
-  short: 50,
-  medium: 100,
-  long: 200,
+  short: 100,
+  medium: 250,
+  long: 500,
 };
 
 export async function POST(request: NextRequest) {

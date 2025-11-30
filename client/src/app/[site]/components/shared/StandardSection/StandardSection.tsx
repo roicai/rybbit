@@ -1,18 +1,17 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { FilterParameter } from "@rybbit/shared";
-import { AlertCircle, Info, RefreshCcw } from "lucide-react";
+import { Info } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { MetricResponse, usePaginatedMetric } from "../../../../../api/analytics/useGetMetric";
+import { ErrorState } from "../../../../../components/ErrorState";
 import { CardLoader } from "../../../../../components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../../components/ui/tooltip";
 import { IS_CLOUD } from "../../../../../lib/const";
 import { Row } from "./Row";
 import { StandardSkeleton } from "./Skeleton";
 import { StandardSectionDialog } from "./StandardSectionDialog";
-import { ErrorState } from "../../../../../components/ErrorState";
 
 const MAX_ITEMS_TO_DISPLAY = 10;
 
@@ -60,26 +59,26 @@ export function StandardSection({
           <CardLoader />
         </div>
       )}
-      <div className="flex flex-col gap-2 max-h-[344px] overflow-y-auto overflow-x-hidden">
-        <div className="flex flex-row gap-2 justify-between pr-1 text-xs text-neutral-600 dark:text-neutral-400">
-          <div className="flex flex-row gap-1 items-center">
-            {title}
-            {IS_CLOUD && ["Countries", "Regions", "Cities"].includes(title) && (
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="w-3 h-3" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  Geolocation by{" "}
-                  <Link href="https://ipapi.is/" target="_blank" className="text-emerald-400 hover:text-emerald-300">
-                    ipapi.is
-                  </Link>
-                </TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-          <div>{countLabel || "Sessions"}</div>
+      <div className="flex flex-row gap-2 justify-between pr-1 text-xs text-neutral-600 dark:text-neutral-400 mb-2">
+        <div className="flex flex-row gap-1 items-center">
+          {title}
+          {IS_CLOUD && ["Countries", "Regions", "Cities"].includes(title) && (
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="w-3 h-3" />
+              </TooltipTrigger>
+              <TooltipContent>
+                Geolocation by{" "}
+                <Link href="https://ipapi.is/" target="_blank" className="text-emerald-400 hover:text-emerald-300">
+                  ipapi.is
+                </Link>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
+        <div>{countLabel || "Sessions"}</div>
+      </div>
+      <div className="flex flex-col gap-2 max-h-[314px] overflow-y-auto overflow-x-hidden">
         {isLoading ? (
           <StandardSkeleton />
         ) : error ? (
@@ -88,7 +87,7 @@ export function StandardSection({
           <>
             {itemsForDisplay?.length ? (
               itemsForDisplay
-                .slice(0, MAX_ITEMS_TO_DISPLAY)
+                // .slice(0, MAX_ITEMS_TO_DISPLAY)
                 .map(e => (
                   <Row
                     key={getKey(e)}

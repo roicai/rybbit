@@ -63,7 +63,7 @@ export function ImportManager({ siteId, disabled }: ImportManagerProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [importToDelete, setImportToDelete] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedPlatform, setSelectedPlatform] = useState<"umami" | undefined>(undefined);
+  const [selectedPlatform, setSelectedPlatform] = useState<"umami" | "">("");
   const [fileError, setFileError] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const workerManagerRef = useRef<CsvParser | null>(null);
@@ -116,7 +116,7 @@ export function ImportManager({ siteId, disabled }: ImportManagerProps) {
           );
 
           setSelectedFile(null);
-          setSelectedPlatform(undefined);
+          setSelectedPlatform("");
           setFileError("");
           if (fileInputRef.current) {
             fileInputRef.current.value = "";

@@ -262,6 +262,35 @@ export function getFilterStatement(filters: string, siteId?: number, timeStateme
           )`;
         }
 
+        // Special handling for user_id to also check identified_user_id
+        // This is needed because URLs may contain either the device fingerprint (user_id)
+        // or the custom identified user ID (identified_user_id)
+        if (filter.parameter === "user_id") {
+          if (filter.value.length === 1) {
+            const escapedValue = SqlString.escape(filter.value[0]);
+            if (filter.type === "equals") {
+              return `(user_id = ${escapedValue} OR identified_user_id = ${escapedValue})`;
+            } else if (filter.type === "not_equals") {
+              return `(user_id != ${escapedValue} AND identified_user_id != ${escapedValue})`;
+            }
+          }
+
+          const conditions = filter.value.map(value => {
+            const escapedValue = SqlString.escape(value);
+            if (filter.type === "equals") {
+              return `(user_id = ${escapedValue} OR identified_user_id = ${escapedValue})`;
+            } else {
+              return `(user_id != ${escapedValue} AND identified_user_id != ${escapedValue})`;
+            }
+          });
+
+          if (filter.type === "equals") {
+            return `(${conditions.join(" OR ")})`;
+          } else {
+            return `(${conditions.join(" AND ")})`;
+          }
+        }
+
         // Special handling for lat/lon with tolerance
         if (filter.parameter === "lat" || filter.parameter === "lon") {
           const tolerance = 0.001;

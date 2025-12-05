@@ -1,11 +1,9 @@
 ---
-title: Stats API Guide
+title: API Reference
 description: Authentication, common parameters, and best practices for the Rybbit Stats API
 ---
 
 import { TypeTable } from 'fumadocs-ui/components/type-table';
-
-The Rybbit API allows you to programmatically access your analytics data. All analytics endpoints are read-only and require authentication via API keys.
 
 ## Authentication
 
@@ -41,6 +39,8 @@ API keys are user-scoped and grant organization-level access:
 
 - **500 requests per 10 minutes** per API key
 - Keys are tied to your user account and grant access to all sites in your organization(s)
+
+---
 
 ## Common Parameters
 
@@ -414,7 +414,6 @@ The `filters` parameter accepts a JSON-encoded array of filter objects to narrow
   }
 ]
 ```
-
 
 **URL-encoded:**
 ```

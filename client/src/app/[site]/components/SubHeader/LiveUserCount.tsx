@@ -51,9 +51,9 @@ export function LiveUserCount() {
 
   return (
     <Drawer>
-      <DrawerTrigger>
-        <Tooltip>
-          <TooltipTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DrawerTrigger asChild>
             <Button className="h-8" variant="ghost">
               <div className="flex items-center gap-1 text-base text-neutral-700 dark:text-neutral-200 cursor-pointer">
                 <span className="relative flex h-3 w-3">
@@ -65,12 +65,12 @@ export function LiveUserCount() {
                 </span>
               </div>
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Users online in past 5 minutes</p>
-          </TooltipContent>
-        </Tooltip>
-      </DrawerTrigger>
+          </DrawerTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Users online in past 5 minutes</p>
+        </TooltipContent>
+      </Tooltip>
       <DrawerContent>
         <VisuallyHidden>
           <DrawerHeader>

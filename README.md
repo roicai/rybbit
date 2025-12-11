@@ -42,7 +42,7 @@ There are two ways to start using Rybbit:
 
 ## Sponsors
 
-<!-- sponsors --><!-- sponsors -->
+<!-- sponsors -->No sponsors yet. Be the first to support this project!<!-- sponsors -->
 
 ## ✨ Key Features
 

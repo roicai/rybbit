@@ -16,7 +16,8 @@ interface GetPageviewCountsRequest {
 
 type PageviewCountResult = {
   pathname: string;
-  count: number;
+  pageviews: number;
+  shares: number;
 };
 
 /**
@@ -78,17 +79,18 @@ export async function getPageviewCounts(
     const query = `
       SELECT
         pathname,
-        COUNT(*) as count
+        countIf(type = 'pageview') as pageviews,
+        uniqIf(session_id, type = 'custom_event' AND event_name = 'share') as shares
       FROM events
       WHERE
         site_id = {siteId:Int32}
-        AND type = 'pageview'
+        AND (type = 'pageview' OR (type = 'custom_event' AND event_name = 'share'))
         AND match(pathname, {regex:String})
         ${pathnameDateFilter}
         ${timeStatement}
         ${filterStatement}
       GROUP BY pathname
-      ORDER BY count DESC
+      ORDER BY pageviews DESC
     `;
 
     const queryParams: Record<string, unknown> = {
@@ -109,10 +111,10 @@ export async function getPageviewCounts(
 
     const rows = await processResults<PageviewCountResult>(result);
 
-    // Transform array to object { pathname: count }
-    const data: Record<string, number> = {};
+    // Transform array to object { pathname: { pageviews, shares } }
+    const data: Record<string, { pageviews: number; shares: number }> = {};
     for (const row of rows) {
-      data[row.pathname] = row.count;
+      data[row.pathname] = { pageviews: row.pageviews, shares: row.shares };
     }
 
     return res.send({ data });

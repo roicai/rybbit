@@ -31,6 +31,7 @@ import { getRetention } from "./api/analytics/getRetention.js";
 import { getSession } from "./api/analytics/getSession.js";
 import { getSessions } from "./api/analytics/getSessions.js";
 import { getMetric } from "./api/analytics/getMetric.js";
+import { getPageviewCounts } from "./api/analytics/getPageviewCounts.js";
 import { getUserInfo } from "./api/analytics/getUserInfo.js";
 import { getUserSessionCount } from "./api/analytics/getUserSessionCount.js";
 import { getUsers } from "./api/analytics/getUsers.js";
@@ -251,6 +252,7 @@ const ANALYTICS_ROUTES = [
   "/api/session-replay/",
   "/api/gsc/data/",
   "/api/gsc/status/",
+  "/api/pageview-counts/",
 ];
 
 server.addHook("onRequest", async (request, reply) => {
@@ -363,6 +365,7 @@ server.get("/api/events/names/:site", getEventNames);
 server.get("/api/events/properties/:site", getEventProperties);
 server.get("/api/events/outbound/:site", getOutboundLinks);
 server.get("/api/org-event-count/:organizationId", getOrgEventCount);
+server.get("/api/pageview-counts/:site", getPageviewCounts);
 
 // Performance Analytics
 server.get("/api/performance/overview/:site", getPerformanceOverview);

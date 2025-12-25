@@ -36,7 +36,7 @@ export const createApiKey = async (request: FastifyRequest<{ Body: CreateApiKeyB
         name,
         userId: session.user.id,
         expiresIn,
-        rateLimitEnabled: true,
+        rateLimitEnabled: false,
         rateLimitTimeWindow: 1000 * 60 * 10, // 10 minutes
         rateLimitMax: 500,
         prefix: "rb_",

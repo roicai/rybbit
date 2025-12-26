@@ -84,7 +84,7 @@ export async function getPageviewCounts(
       FROM events
       WHERE
         site_id = {siteId:Int32}
-        AND (type = 'pageview' OR (type = 'custom_event' AND event_name = 'share'))
+        AND (type = 'pageview' OR (type = 'custom_event' AND event_name = 'share_post'))
         AND match(pathname, {regex:String})
         ${pathnameDateFilter}
         ${timeStatement}
